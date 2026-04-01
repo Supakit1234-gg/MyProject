@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Employees</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <script src="js/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="js/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <%- include('../navbar') %>
+
+    <div class="container manage-page">
+
+        <!-- Header -->
+        <div class="manage-header">
+            <div>
+                <h2 class="page-title">จัดการพนักงาน</h2>
+                <p class="page-subtitle">เพิ่ม ลบ แก้ไขข้อมูลในฐานข้อมูล</p>
+            </div>
+            <a href="/employees/add" class="btn-add">
+                เพิ่มพนักงาน
+            </a>
+        </div>
+
+        <!-- Search -->
+        <div class="search-wrap">
+           
+            <input type="text" id="searchInput" class="search-input" placeholder="ค้นหาพนักงาน...">
+        </div>
+
+        <!-- Table -->
+        <div class="table-card">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>พนักงาน</th>
+                        <th>เพศ</th>
+                        <th>ตำแหน่ง</th>
+                        <th>เบอร์โทร</th>
+                        <th>Email</th>
+                        <th>เงินเดือน</th>
+                        <th>วันเริ่มงาน</th>
+                        <th>สถานะ</th>
+                        <th colspan="2" style="text-align:center;">จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="employeeTable">
+                    <% employee.forEach(function(item){ %>
+                    <tr>
+                        <td>
+                            <div class="member-info">
+                                <div class="member-avatar">
+                                    <%= item.name.charAt(0).toUpperCase() %>
+                                </div>
+                                <span class="name"><%= item.name %></span>
+                            </div>
+                        </td>
+                        <td class="gender">
+                            <% if(item.gender === 'ชาย' || item.gender === 'male'){ %>
+                                <span class="gender-badge gender-male"><%= item.gender %></span>
+                            <% } else { %>
+                                <span class="gender-badge gender-female"><%= item.gender %></span>
+                            <% } %>
+                        </td>
+                        <td class="position">
+                            <span class="position-badge"><%= item.position %></span>
+                        </td>
+                        <td class="phone">
+                            
+                            <%= item.phone %>
+                        </td>
+                        <td class="email" style="font-size:0.88rem; color:#7a7570;">
+                            <%= item.email %>
+                        </td>
+                        <td class="salary">
+                            <span class="salary-text"><%= Number(item.salary).toLocaleString() %></span>
+                            <span style="color:#b0a89f; font-size:0.78rem;"> บาท</span>
+                        </td>
+                        <td class="startdate" style="font-size:0.88rem; color:#7a7570; white-space:nowrap;">
+                            
+                            <%= item.startdate ? new Date(item.startdate).toISOString().split('T')[0] : '—' %>
+                        </td>
+                        <td class="status">
+                            <% if(item.status === 'active' || item.status === 'ทำงาน'){ %>
+                                <span class="status-badge status-active"><%= item.status %></span>
+                            <% } else { %>
+                                <span class="status-badge status-inactive"><%= item.status %></span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <a class="btn-action btn-delete"
+                                href="/employees/delete/<%= item._id %>"
+                                onclick="return confirm('คุณต้องการลบพนักงานนี้หรือไม่?')">
+                                ลบ
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btn-action btn-edit" href="/employees/edit/<%= item._id %>">
+                                แก้ไข
+                            </a>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById("searchInput").addEventListener("keyup", function () {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#employeeTable tr");
+            rows.forEach(row => {
+                let name = row.querySelector(".name").textContent.toLowerCase();
+                let email = row.querySelector(".email").textContent.toLowerCase();
+                let phone = row.querySelector(".phone").textContent.toLowerCase();
+                row.style.display = (name.includes(filter) || email.includes(filter) || phone.includes(filter)) ? "" : "none";
+            });
+        });
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&family=Playfair+Display:wght@500&display=swap');
+
+        body { background: #faf8f5; font-family: 'Sarabun', sans-serif; }
+
+        .manage-page { padding: 40px 48px 60px; }
+
+        .manage-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 500;
+            color: #1a1814;
+            margin-bottom: 4px;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 36px; height: 2px;
+            background: #c8602a;
+            border-radius: 2px;
+        }
+
+        .page-subtitle { color: #7a7570; font-size: 0.9rem; margin: 0; }
+
+        .btn-add {
+            background: #1a1814;
+            color: #fff;
+            border-radius: 10px;
+            padding: 10px 22px;
+            font-family: 'Sarabun', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: background 0.2s, transform 0.15s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+            white-space: nowrap;
+        }
+
+        .btn-add:hover {
+            background: #c8602a;
+            color: #fff;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+        /* Search */
+        .search-wrap { position: relative; margin-bottom: 20px; }
+
+        .search-icon {
+            position: absolute;
+            left: 16px; top: 50%;
+            transform: translateY(-50%);
+            color: #b0a89f;
+            font-size: 0.9rem;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            border: 1.5px solid #e8e2da;
+            border-radius: 12px;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 0.95rem;
+            color: #1a1814;
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #c8602a;
+            box-shadow: 0 0 0 3px rgba(200,96,42,0.1);
+        }
+
+        .search-input::placeholder { color: #b0a89f; }
+
+        /* Table */
+        .table-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+            overflow: auto;
+        }
+
+        .table { margin-bottom: 0; min-width: 900px; }
+
+        .table thead tr { background: #faf8f5; }
+
+        .table thead th {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #7a7570;
+            border-bottom: 2px solid #e8e2da;
+            border-top: none;
+            padding: 14px 16px;
+            white-space: nowrap;
+        }
+
+        .table tbody td {
+            padding: 13px 16px;
+            vertical-align: middle;
+            font-size: 0.92rem;
+            color: #1a1814;
+            border-color: #f0ebe4;
+        }
+
+        .table tbody tr { transition: background 0.15s ease; }
+        .table tbody tr:hover { background: #fdf7f4; }
+
+        /* Avatar */
+        .member-info { display: flex; align-items: center; gap: 10px; }
+
+        .member-avatar {
+            width: 34px; height: 34px;
+            background: #1a1814;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        /* Gender badge */
+        .gender-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .gender-male  { background: #e8f0fe; color: #1a5dc8; }
+        .gender-female { background: #fce8f3; color: #a0257a; }
+
+        /* Position badge */
+        .position-badge {
+            background: #f0ebe4;
+            color: #5a4a3a;
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* Salary */
+        .salary-text { font-weight: 600; color: #1a1814; }
+
+        /* Status badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-badge .fas.fa-circle { font-size: 0.45rem; margin-bottom: 1px; }
+        .status-active   { background: #eaf5ef; color: #2d7a4f; }
+        .status-inactive { background: #f5f0ea; color: #7a6a5a; }
+
+        /* Action buttons */
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+
+        .btn-action:hover { opacity: 0.85; transform: translateY(-1px); text-decoration: none; }
+        .btn-delete { background: #fdecea; color: #c0392b; }
+        .btn-edit   { background: #e8f0fe; color: #1a5dc8; }
+
+        @media (max-width: 768px) {
+            .manage-page { padding: 24px 16px 48px; }
+        }
+    </style>
+
+</body>
+</html>

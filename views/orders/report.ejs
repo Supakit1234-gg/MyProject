@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>รายงานการขาย</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.4.1.slim.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/all.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <%- include('../navbar') %>
+
+    <div class="container report-page">
+
+        <h2 class="page-title">รายงานการขาย</h2>
+
+        <!-- Search -->
+        <form method="GET" action="/orders/report">
+            <div class="search-card">
+                <div>
+                    <label>วันเริ่มต้น</label>
+                    <input type="date" name="startDate" class="form-control"
+                        value="<%= startDate || '' %>">
+                </div>
+                <div class="date-sep">ถึง</div>
+                <div>
+                    <label>วันสิ้นสุด</label>
+                    <input type="date" name="endDate" class="form-control"
+                        value="<%= endDate || '' %>">
+                </div>
+                <button type="submit" class="btn-find">ค้นหา</button>
+                <a href="/orders/report" class="btn-clear">ล้างค้นหา</a>
+            </div>
+        </form>
+
+        <!-- Revenue Summary -->
+        <div class="revenue-card">
+            <div class="revenue-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="1" x2="12" y2="23"/>
+                    <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+                </svg>
+            </div>
+            <div>
+                <div class="revenue-label">รายได้รวม</div>
+                <div class="revenue-amount">
+                    <%= totalRevenue.toLocaleString() %>
+                    <span>บาท</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>สินค้า</th>
+                        <th>ราคา</th>
+                        <th>จำนวน</th>
+                        <th>รวม</th>
+                        <th>วันที่</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if(orders.length > 0){ %>
+                        <% orders.forEach(order => { %>
+                        <tr>
+                            <td class="product-name"><%= order.product_name %></td>
+                            <td><%= order.price.toLocaleString() %> บาท</td>
+                            <td><%= order.qty %></td>
+                            <td class="total-cell"><%= order.total.toLocaleString() %> บาท</td>
+                            <td class="date-cell">
+             
+                                <%= new Date(order.order_date).toLocaleDateString('th-TH') %>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr>
+                            <td colspan="5">
+                                <div class="empty-state">
+                              
+                                    <p>ไม่พบรายการสั่งซื้อ</p>
+                                </div>
+                            </td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+     <style>
+        :root {
+    --bg-main: #0f172a;
+    --bg-soft: #111827;
+    --card: rgba(30, 41, 59, 0.7);
+    --border: rgba(255,255,255,0.08);
+
+    --text-main: #e5e7eb;
+    --text-soft: #9ca3af;
+
+    --primary: #6366f1;
+    --primary-light: #818cf8;
+}
+
+/* ===== BACKGROUND ===== */
+body {
+    background: radial-gradient(circle at 20% 20%, #1e293b, #0f172a);
+    font-family: 'Sarabun', sans-serif;
+    color: var(--text-main);
+}
+
+/* ===== PAGE ===== */
+.report-page {
+    padding: 40px 48px 60px;
+}
+
+/* ===== TITLE ===== */
+.page-title {
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 28px;
+    position: relative;
+}
+
+.page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, var(--primary), var(--primary-light));
+}
+
+/* ===== SEARCH CARD ===== */
+.search-card {
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    border-radius: 16px;
+    padding: 22px 24px;
+    margin-bottom: 24px;
+
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: center;
+}
+
+.search-card label {
+    font-size: 0.75rem;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+}
+
+.search-card .form-control {
+    background: rgba(17,24,39,0.7);
+    border: 1px solid var(--border);
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 14px;
+    min-width: 200px;
+}
+
+.search-card .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(99,102,241,0.3);
+}
+
+/* ===== BUTTON ===== */
+.btn-find {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: #fff;
+    border-radius: 10px;
+    padding: 10px 26px;
+    border: none;
+    font-weight: 600;
+
+    box-shadow: 0 8px 20px rgba(99,102,241,0.4);
+    transition: 0.25s;
+}
+
+.btn-find:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(99,102,241,0.6);
+}
+
+.btn-clear {
+    background: rgba(255,255,255,0.05);
+    color: var(--text-soft);
+    border-radius: 10px;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+.btn-clear:hover {
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+}
+
+/* ===== REVENUE ===== */
+.revenue-card {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    border-radius: 16px;
+    padding: 22px 28px;
+    margin-bottom: 28px;
+
+    display: flex;
+    gap: 16px;
+    align-items: center;
+
+    box-shadow: 0 10px 40px rgba(99,102,241,0.5);
+}
+
+.revenue-label {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+}
+
+.revenue-amount {
+    font-size: 1.9rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* ===== TABLE CARD ===== */
+.table-card {
+    background: var(--card);
+    backdrop-filter: blur(16px);
+    border-radius: 18px;
+
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+
+    overflow: hidden;
+}
+
+/* ===== TABLE ===== */
+.table thead tr {
+    background: rgba(255,255,255,0.02);
+}
+
+.table thead th {
+    color: var(--text-soft);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid var(--border);
+}
+
+.table tbody td {
+    color: var(--text-main);
+    border-color: rgba(255,255,255,0.05);
+}
+
+/* hover row */
+.table tbody tr:hover {
+    background: rgba(99,102,241,0.08);
+}
+
+/* highlight */
+.total-cell {
+    color: var(--primary-light);
+    font-weight: 600;
+}
+
+.date-cell {
+    color: var(--text-soft);
+}
+
+/* empty */
+.empty-state {
+    color: var(--text-soft);
+}
+    </style>
+</html>

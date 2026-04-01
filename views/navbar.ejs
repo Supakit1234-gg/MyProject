@@ -1,0 +1,73 @@
+<nav class="navbar navbar-expand-md navbar-dark"
+        style="background: #1a1814; box-shadow: 0 2px 20px
+        rgba(0,0,0,0.15);">
+        <div class="container-fluid">
+
+        <!-- Logo -->
+        <a href="/" class="navbar-brand">
+            <img src="/images/home/logo.png" style="height: 36px;
+        object-fit: contain;">
+        </a>
+
+        <!-- Toggler mobile -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav ml-auto align-items-md-center">
+
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+                        ⚙️ หลังบ้าน
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right nav-dropdown">
+                        <a class="dropdown-item" href="/manage">📦 จัดการสินค้า</a>
+                        <a class="dropdown-item" href="/addForm">➕ บันทึกสินค้า</a>
+                    </div>
+                </li>
+
+                <!-- Menu -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/members">👥 สมาชิก</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/orders/report">📊 รายงาน</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" href="/employees">👨‍💼 พนักงาน</a>
+                </li>
+
+                <!-- Divider -->
+                <li class="nav-item mx-2 d-none d-md-block">
+                    <span class="nav-divider"></span>
+                </li>
+
+                <!-- User -->
+                <% if (user){ %>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-toggle="dropdown">
+                        <span class="user-avatar">
+                            <%= user.name.charAt(0).toUpperCase() %>
+                        </span>
+                        <%= user.name %>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right nav-dropdown">
+                        <a class="dropdown-item dropdown-item-danger" href="/logout">
+                            🚪 Logout
+                        </a>
+                    </div>
+                </li>
+                <% } else { %>
+                <li class="nav-item">
+                    <a href="/login" class="btn-login">🔐 Login</a>
+                </li>
+                <% } %>
+
+            </ul>
+        </div>
+    </div>
+</nav>

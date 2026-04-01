@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="login-wrapper">
+
+        <!-- Brand -->
+        <div class="login-brand">
+            <div class="login-brand-icon">
+                <!-- Shopping bag icon -->
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#c8602a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+                    <line x1="3" y1="6" x2="21" y2="6"/>
+                    <path d="M16 10a4 4 0 01-8 0"/>
+                </svg>
+            </div>
+            <h1>K-SHOP</h1>
+            <p>ยินดีต้อนรับกลับ เข้าสู่ระบบเพื่อดำเนินการต่อ</p>
+        </div>
+
+        <!-- Card -->
+        <div class="login-card">
+
+            <% if (message) { %>
+            <div class="error-msg">
+                <!-- Alert circle -->
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <%= message %>
+            </div>
+            <% } %>
+
+            <form action="/login" method="POST">
+
+                <div class="field-group">
+                    <label class="field-label">Email</label>
+                    <div class="field-wrap">
+                        <span class="field-icon">
+                            <!-- Envelope icon -->
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b0a89f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                        </span>
+                        <input type="email" name="email" class="field-input"
+                            placeholder="example@email.com" required>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Password</label>
+                    <div class="field-wrap">
+                        <span class="field-icon">
+                            <!-- Lock icon -->
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#b0a89f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0110 0v4"/>
+                            </svg>
+                        </span>
+                        <input type="password" name="password" id="passwordInput"
+                            class="field-input" placeholder="รหัสผ่าน" required>
+                        <button type="button" class="toggle-pw" id="togglePw">
+                            <!-- Eye icon -->
+                            <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">เข้าสู่ระบบ</button>
+
+            </form>
+        </div>
+
+        <div class="login-footer">
+            ยังไม่มีบัญชี? <a href="/register">สมัครสมาชิก</a>
+        </div>
+
+    </div>
+
+    <script>
+        const toggleBtn = document.getElementById('togglePw');
+        const input = document.getElementById('passwordInput');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        const eyeOpen = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+        const eyeOff  = `<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+
+        toggleBtn.addEventListener('click', function () {
+            if (input.type === 'password') {
+                input.type = 'text';
+                eyeIcon.innerHTML = eyeOff;
+            } else {
+                input.type = 'password';
+                eyeIcon.innerHTML = eyeOpen;
+            }
+        });
+    </script>
+
+</body>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&family=Playfair+Display:wght@500&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background: linear-gradient(135deg, #fdfbfb, #ebedee);
+    font-family: 'Sarabun', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* animation smooth ขึ้น */
+.login-wrapper {
+    width: 100%;
+    max-width: 420px;
+    padding: 24px;
+    animation: fadeUp 0.6s ease both;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== BRAND ===== */
+.login-brand {
+    text-align: center;
+    margin-bottom: 34px;
+}
+
+.login-brand-icon {
+    width: 62px;
+    height: 62px;
+    background: linear-gradient(135deg, #c8602a, #ff9a6c);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 14px;
+    box-shadow: 0 8px 24px rgba(200,96,42,0.35);
+}
+
+.login-brand h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.7rem;
+    color: #1a1814;
+}
+
+.login-brand p {
+    color: #7a7570;
+    font-size: 0.9rem;
+}
+
+/* ===== CARD ===== */
+.login-card {
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(14px);
+    border-radius: 22px;
+    padding: 38px 32px;
+    border: 1px solid rgba(255,255,255,0.6);
+    box-shadow: 
+        0 12px 40px rgba(0,0,0,0.08),
+        0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* ===== ERROR ===== */
+.error-msg {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(231, 76, 60, 0.08);
+    color: #c0392b;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+/* ===== FORM ===== */
+.field-group { margin-bottom: 20px; }
+
+.field-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #7a7570;
+    margin-bottom: 8px;
+}
+
+/* input wrapper */
+.field-wrap { position: relative; }
+
+.field-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* INPUT ใหม่ */
+.field-input {
+    width: 100%;
+    padding: 13px 14px 13px 42px;
+    border-radius: 12px;
+    border: 1.5px solid #eee;
+    background: #fff;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+}
+
+/* hover */
+.field-input:hover {
+    border-color: #ddd;
+}
+
+/* focus glow */
+.field-input:focus {
+    outline: none;
+    border-color: #c8602a;
+    box-shadow: 0 0 0 4px rgba(200,96,42,0.12);
+}
+
+/* placeholder */
+.field-input::placeholder {
+    color: #c0b8b0;
+}
+
+/* toggle password */
+.toggle-pw {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #b0a89f;
+    transition: 0.2s;
+}
+
+.toggle-pw:hover {
+    color: #c8602a;
+}
+
+/* ===== BUTTON ===== */
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    margin-top: 10px;
+
+    background: linear-gradient(135deg, #c8602a, #ff9a6c);
+    color: #fff;
+
+    box-shadow: 0 8px 24px rgba(200,96,42,0.35);
+    transition: all 0.25s ease;
+}
+
+/* hover ลอย */
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(200,96,42,0.45);
+}
+
+/* click */
+.btn-login:active {
+    transform: scale(0.97);
+}
+
+/* ===== FOOTER ===== */
+.login-footer {
+    text-align: center;
+    margin-top: 22px;
+    font-size: 0.88rem;
+    color: #7a7570;
+}
+
+.login-footer a {
+    color: #c8602a;
+    font-weight: 600;
+    text-decoration: none;
+    position: relative;
+}
+
+/* underline animation */
+.login-footer a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background: #c8602a;
+    transform: scaleX(0);
+    transition: 0.25s;
+}
+
+.login-footer a:hover::after {
+    transform: scaleX(1);
+}
+    </style>
+</html>

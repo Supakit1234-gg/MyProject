@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>เพิ่มพนักงาน</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/jquery-3.4.1.slim.min.js"></script>
+    <script src="/js/popper.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/all.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <%- include('../navbar') %>
+
+    <div class="container add-page">
+
+        <div class="add-header">
+
+            <div>
+                <h2 class="page-title">เพิ่มพนักงาน</h2>
+                <p class="page-subtitle">กรอกข้อมูลพนักงานที่ต้องการเพิ่มในระบบ</p>
+            </div>
+        </div>
+
+        <div class="form-card">
+            <form method="POST" action="/employees/add">
+
+                <!-- ชื่อ -->
+                <div class="field-full">
+                    <label class="field-label">ชื่อพนักงาน</label>
+                    <input type="text" class="field-input" name="name"
+                        value="<%= employees.name %>" placeholder="ชื่อ-นามสกุล" required>
+                </div>
+
+                <!-- เพศ + ตำแหน่ง -->
+                <div class="form-row-group">
+                    <div class="field-half">
+                        <label class="field-label">เพศ</label>
+                        <div class="select-wrap">
+                            <select class="field-input field-select" name="gender" required>
+                                <option value="">-- เลือกเพศ --</option>
+                                <option value="ชาย" <%= employees.gender === 'ชาย' ? 'selected' : '' %>>ชาย</option>
+                                <option value="หญิง" <%= employees.gender === 'หญิง' ? 'selected' : '' %>>หญิง</option>
+                            </select>
+                            
+                        </div>
+                    </div>
+                    <div class="field-half">
+                        <label class="field-label">ตำแหน่ง</label>
+                        <div class="select-wrap">
+                            <select class="field-input field-select" name="position" required>
+                                <option value="">-- เลือกตำแหน่ง --</option>
+                                <option value="employee" <%= employees.position === 'employee' ? 'selected' : '' %>>Employee</option>
+                                <option value="manager" <%= employees.position === 'manager' ? 'selected' : '' %>>Manager</option>
+                            </select>
+                         
+                        </div>
+                    </div>
+                </div>
+
+                <!-- โทร + Email -->
+                <div class="form-row-group">
+                    <div class="field-half">
+                        <label class="field-label">เบอร์โทร</label>
+                        <input type="text" class="field-input" name="phone"
+                            value="<%= employees.phone %>" placeholder="เช่น 081-234-5678" required>
+                    </div>
+                    <div class="field-half">
+                        <label class="field-label">Email</label>
+                        <input type="text" class="field-input" name="email"
+                            value="<%= employees.email %>" placeholder="example@email.com" required>
+                    </div>
+                </div>
+
+                <!-- เงินเดือน + วันเริ่มงาน -->
+                <div class="form-row-group">
+                    <div class="field-half">
+                        <label class="field-label">เงินเดือน (บาท)</label>
+                        <input type="text" class="field-input" name="salary"
+                            value="<%= employees.salary %>" placeholder="เช่น 25000" required>
+                    </div>
+                    <div class="field-half">
+                        <label class="field-label">วันเริ่มงาน</label>
+                        <input type="date" class="field-input" name="startdate"
+                            value="<%= employees.startdate ? employees.startdate.toISOString().split('T')[0] : '' %>">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <a href="/employees" class="btn-cancel">ยกเลิก</a>
+                    <button type="submit" class="btn-save">
+                       บันทึกพนักงาน
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+    --bg: #0b0b0c;
+    --card: rgba(28,28,30,0.8);
+    --border: rgba(255,255,255,0.08);
+    --text-main: #f5f5f7;
+    --text-soft: #8e8e93;
+    --accent: #0a84ff;
+}
+
+/* ===== BACKGROUND (มี layer ลอย) ===== */
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-main);
+    background: radial-gradient(circle at 20% 20%, #1a1a2e, #0b0b0c);
+    overflow-x: hidden;
+}
+
+/* floating blobs */
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: 0;
+}
+
+body::before {
+    background: #0a84ff;
+    top: -100px;
+    left: -100px;
+}
+
+body::after {
+    background: #6366f1;
+    bottom: -120px;
+    right: -100px;
+}
+
+/* ===== LAYOUT ===== */
+.add-page {
+    position: relative;
+    z-index: 1;
+    max-width: 720px;
+    margin: auto;
+    padding: 80px 20px;
+}
+
+/* ===== HEADER UPGRADE ===== */
+.add-header {
+    position: relative;
+    margin-bottom: 28px;
+    padding: 28px 26px;
+    border-radius: 20px;
+
+    background: linear-gradient(135deg, rgba(10,132,255,0.15), rgba(99,102,241,0.15));
+    backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+}
+
+/* glow layer */
+.add-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+
+    background: radial-gradient(circle at top left, rgba(10,132,255,0.4), transparent 60%);
+    opacity: 0.5;
+    z-index: 0;
+}
+
+/* กัน text จม */
+.add-header * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== TITLE ===== */
+.page-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+
+    background: linear-gradient(90deg, #ff0000, #032cfa, #60a5fa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+
+/* ===== SUBTITLE ===== */
+.page-subtitle {
+    font-size: 0.95rem;
+    color: #0066ff;
+
+    opacity: 0.9;
+    letter-spacing: 0.3px;
+}
+
+/* ===== CARD (ลอย + เอียงนิด ๆ) ===== */
+.form-card {
+    margin-top: 28px;
+    padding: 36px 30px;
+    border-radius: 24px;
+
+    background: var(--card);
+    backdrop-filter: blur(20px);
+
+    border: 1px solid var(--border);
+
+    box-shadow:
+        0 40px 80px rgba(0,0,0,0.6),
+        inset 0 1px 0 rgba(255,255,255,0.05);
+
+    transform: rotateX(2deg) rotateY(-2deg);
+    transition: transform 0.4s ease;
+}
+
+/* hover ลอยขึ้น */
+.form-card:hover {
+    transform: rotateX(0deg) rotateY(0deg) translateY(-6px);
+}
+
+/* ===== FORM ===== */
+.form-row-group {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.field-half { flex: 1; }
+.field-full { margin-bottom: 20px; }
+
+/* label */
+.field-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+}
+
+/* ===== INPUT (เน้นชัดขึ้น) ===== */
+.field-input {
+    width: 100%;
+    padding: 13px 14px;
+    border-radius: 12px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(44,44,46,0.5);
+
+    color: #fff;
+    font-size: 0.95rem;
+
+    transition: all 0.25s ease;
+}
+
+/* hover */
+.field-input:hover {
+    border-color: rgba(255,255,255,0.25);
+    background: rgba(44,44,46,0.7);
+}
+
+/* ⭐ focus (สำคัญสุด) */
+.field-input:focus {
+    outline: none;
+
+    border-color: #0a84ff;
+    background: rgba(50,50,52,0.9);
+
+    box-shadow:
+        0 0 0 3px rgba(10,132,255,0.25),
+        0 6px 20px rgba(10,132,255,0.25);
+
+    transform: scale(1.02);
+}
+
+/* placeholder */
+.field-input::placeholder {
+    color: #6e6e73;
+}
+
+/* ===== LABEL ตอน focus ===== */
+.field-input:focus + .field-label,
+.field-input:focus ~ .field-label {
+    color: #0a84ff;
+}
+
+/* hover */
+.field-input:hover {
+    border-color: rgba(255,255,255,0.2);
+}
+
+/* focus glow */
+.field-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(10,132,255,0.2);
+    background: rgba(50,50,52,0.8);
+}
+
+/* ===== SELECT ===== */
+.select-wrap {
+    position: relative;
+}
+
+.field-select {
+    appearance: none;
+    cursor: pointer;
+}
+
+.select-wrap::after {
+    content: "⌄";
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-soft);
+}
+
+/* ===== ACTION ===== */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+/* cancel */
+.btn-cancel {
+    padding: 11px 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    color: #d1d1d6;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.btn-cancel:hover {
+    background: rgba(255,255,255,0.05);
+}
+
+/* ===== SAVE BUTTON (ลอย + glow) ===== */
+.btn-save {
+    padding: 12px 26px;
+    border-radius: 14px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #0a84ff, #3ea6ff);
+    color: #fff;
+
+    box-shadow: 0 10px 30px rgba(10,132,255,0.4);
+    transition: all 0.25s ease;
+}
+
+/* hover */
+.btn-save:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 16px 40px rgba(10,132,255,0.6);
+}
+
+/* click */
+.btn-save:active {
+    transform: scale(0.95);
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+    .form-row-group {
+        flex-direction: column;
+    }
+
+    .form-card {
+        transform: none;
+    }
+}
+    </style>
+
+</body>
+</html>

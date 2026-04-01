@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Order Checkout</title>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <script src="/js/jquery-3.4.1.slim.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/css/all.css">
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+
+    <body>
+        <%- include('../navbar') %>
+        <div class="container mt-4">
+
+            <h2>สรุปรายการสั่งซื้อ</h2>
+
+            <table class="table">
+                <tr>
+                    <th>สินค้า</th>
+                    <td><%= product.name %></td>
+                </tr>
+                <tr>
+                    <th>ราคาต่อชิ้น</th>
+                    <td><%= price.toLocaleString() %> บาท</td>
+                </tr>
+                <tr>
+                    <th>จำนวน</th>
+                    <td><%= qty %></td>
+                </tr>
+                <tr>
+                    <th>ราคารวม</th>
+                    <td class="text-danger"><%= total.toLocaleString() %> บาท</td>
+                </tr>
+            </table>
+
+            <hr>
+
+            <h4>เลือกวิธีชำระเงิน</h4>
+
+            <form action="/orders/payment" method="POST">
+                <input type="hidden" name="product_id" value="<%= product._id %>">
+                <input type="hidden" name="product_name" value="<%= product.name %>">
+                <input type="hidden" name="price" value="<%= price %>">
+                <input type="hidden" name="qty" value="<%= qty %>">
+                <input type="hidden" name="total" value="<%= total %>">
+                <input type="hidden" name="size" value="<%= size %>">
+
+                <div class="payment-options">
+
+                    <label class="payment-card">
+                        <input type="radio" name="payment_method" value="bank" checked>
+                        <div class="payment-card-inner">
+                            <div class="payment-icon">🏦
+                       
+                            </div>
+                            <div class="payment-label">โอนเงิน</div>
+                            <div class="payment-sub">โอนผ่านธนาคาร</div>
+                        </div>
+                        <div class="payment-check">
+         
+                        </div>
+                    </label>
+
+                    <label class="payment-card">
+                        <input type="radio" name="payment_method" value="qr">
+                        <div class="payment-card-inner">
+                            <div class="payment-icon">📱
+                               
+                            </div>
+                            <div class="payment-label">QR Code</div>
+                            <div class="payment-sub">พร้อมเพย์ / PromptPay</div>
+                        </div>
+                        <div class="payment-check">
+             
+                        </div>
+                    </label>
+
+                    <label class="payment-card">
+                        <input type="radio" name="payment_method" value="cod">
+                        <div class="payment-card-inner">
+                            <div class="payment-icon">💵
+                           
+                            </div>
+                            <div class="payment-label">เก็บเงินปลายทาง</div>
+                            <div class="payment-sub">ชำระเมื่อได้รับสินค้า</div>
+                        </div>
+                        <div class="payment-check">
+                   
+                        </div>
+                    </label>
+
+                </div>
+
+                <button class="btn btn-success">ยืนยันการสั่งซื้อ</button>
+            </form>
+
+        </div>
+
+        <style>
+            .payment-options {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+
+            .payment-card {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background: #ffffff;
+                border: 1.5px solid #e8e2da;
+                border-radius: 12px;
+                padding: 16px 20px;
+                cursor: pointer;
+                transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+                position: relative;
+            }
+
+            .payment-card input[type="radio"] {
+                display: none;
+            }
+
+            .payment-card-inner {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+            }
+
+            .payment-icon {
+                width: 44px;
+                height: 44px;
+                border-radius: 10px;
+                background: #f0e6de;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.1rem;
+                color: #c8602a;
+                transition: background 0.2s ease, color 0.2s ease;
+            }
+
+            .payment-label {
+                font-family: 'Sarabun', sans-serif;
+                font-size: 0.95rem;
+                font-weight: 600;
+                color: #1a1814;
+            }
+
+            .payment-sub {
+                font-family: 'Sarabun', sans-serif;
+                font-size: 0.8rem;
+                color: #7a7570;
+                margin-top: 2px;
+            }
+
+            .payment-check {
+                font-size: 1.2rem;
+                color: #e8e2da;
+                transition: color 0.2s ease;
+            }
+
+            /* Selected state */
+            .payment-card:has(input:checked) {
+                border-color: #c8602a;
+                background: #fdf7f4;
+                box-shadow: 0 2px 16px rgba(200, 96, 42, 0.12);
+            }
+
+            .payment-card:has(input:checked) .payment-icon {
+                background: #c8602a;
+                color: #ffffff;
+            }
+
+            .payment-card:has(input:checked) .payment-check {
+                color: #c8602a;
+            }
+
+            .payment-card:hover:not(:has(input:checked)) {
+                border-color: #c8b5a8;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            }
+        </style>
+
+    </body>
+</html>

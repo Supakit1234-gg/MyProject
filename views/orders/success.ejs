@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Success</title>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <script src="/js/jquery-3.4.1.slim.min.js"></script>
+        <script src="/js/popper.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="/css/all.css">
+        <link rel="stylesheet" href="/css/style.css">       
+    </head>
+    <body>
+        <%- include('../navbar') %>
+
+        <div class="success-wrapper">
+            <div class="success-card">
+
+                <div class="success-icon">
+                    <svg viewBox="0 0 24 24">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                </div>
+
+                <h2>สั่งซื้อสำเร็จแล้ว!</h2>
+                <p>ขอบคุณสำหรับการสั่งซื้อ<br>เราจะดำเนินการจัดส่งให้โดยเร็วที่สุด</p>
+
+                <a href="/" class="btn-home">กลับหน้าแรก</a>
+
+            </div>
+        </div>
+    </body>
+    <style>
+            @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600&family=Playfair+Display:wght@500&display=swap');
+
+            .success-wrapper {
+                min-height: 70vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .success-card {
+                background: #ffffff;
+                border-radius: 20px;
+                box-shadow: 0 4px 40px rgba(0,0,0,0.08);
+                padding: 56px 48px;
+                text-align: center;
+                max-width: 440px;
+                width: 100%;
+                animation: fadeUp 0.5s ease both;
+            }
+
+            @keyframes fadeUp {
+                from { opacity: 0; transform: translateY(24px); }
+                to   { opacity: 1; transform: translateY(0); }
+            }
+
+            .success-icon {
+                width: 72px;
+                height: 72px;
+                background: #eaf5ef;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 24px;
+            }
+
+            .success-icon svg {
+                width: 36px;
+                height: 36px;
+                stroke: #2d7a4f;
+                stroke-width: 2.5;
+                fill: none;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+                stroke-dasharray: 60;
+                stroke-dashoffset: 60;
+                animation: drawCheck 0.5s ease 0.3s forwards;
+            }
+
+            @keyframes drawCheck {
+                to { stroke-dashoffset: 0; }
+            }
+
+            .success-card h2 {
+                font-family: 'Playfair Display', serif;
+                font-size: 1.6rem;
+                font-weight: 500;
+                color: #1a1814;
+                margin-bottom: 10px;
+            }
+
+            .success-card p {
+                font-family: 'Sarabun', sans-serif;
+                color: #7a7570;
+                font-size: 0.95rem;
+                margin-bottom: 32px;
+            }
+
+            .btn-home {
+                display: inline-block;
+                padding: 14px 36px;
+                background: #1a1814;
+                color: #fff !important;
+                border-radius: 10px;
+                font-family: 'Sarabun', sans-serif;
+                font-size: 0.95rem;
+                font-weight: 600;
+                letter-spacing: 0.05em;
+                text-decoration: none;
+                transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+                box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            }
+
+            .btn-home:hover {
+                background: #c8602a;
+                transform: translateY(-1px);
+                box-shadow: 0 6px 24px rgba(200,96,42,0.28);
+            }
+
+            .btn-home:active {
+                transform: translateY(0);
+            }
+        </style>
+</html>
