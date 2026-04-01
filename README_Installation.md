@@ -6,7 +6,6 @@ npm
 ขั้นตอนการติดตั้ง
 1. Clone โปรเจค
 <<<<<<< HEAD git clone [https://github.com/6811850001-bot/k-shop.git](https://github.com/Supakit1234-gg/MyProject/new/main)
-git clone [https://github.com/6811850001-bot/k-shop.git](https://github.com/Supakit1234-gg/MyProject/new/main)
 
 39707fb467f50c280d6707f1bb698d417c6135e8 cd k-shop
 
